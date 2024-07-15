@@ -23,7 +23,7 @@ const createStudent = async (
             data: result
         })
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
 
