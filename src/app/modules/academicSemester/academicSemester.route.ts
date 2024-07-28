@@ -18,14 +18,14 @@ router.get(
 )
 router.get(
     '/:id',
-    AcademicSemesterController.createAcademicSemester
+    AcademicSemesterController.getSingleAcademicSemester
 )
 router.patch(
     '/:id',
     validateRequest(
-        AcademicSemesterValidation.createAcademicSemesterValidationSchema
+        AcademicSemesterValidation.updateAcademicSemesterValidationSchema
     ),
-    AcademicSemesterController.createAcademicSemester
+    AcademicSemesterController.updateAcademicSemester
 )
 
 export const AcademicSemesterRoutes = router
