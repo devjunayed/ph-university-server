@@ -24,6 +24,9 @@ const updateAcademicSemesterIntoDB = async (
     id: string,
     payload: Partial<TAcademicSemester>
 ) => {
+    if(payload.name && payload.code && academicSemesterNameCodeMapper[payload.name] !== payload.code){
+        throw new Error("Invalid semester code name");
+    }
     const result = await AcademicSemester.findByIdAndUpdate(id, payload)
     return result
 }
