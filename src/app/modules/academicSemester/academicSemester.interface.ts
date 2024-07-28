@@ -18,7 +18,11 @@ export type TSemesterName = 'Autumn' | 'Summer' | 'Fall'
 export type TAcademicSemester = {
     name: TSemesterName
     code: TSemestercode
-    year: Date
+    year: string
     startMonth: TMonth
     endMonth: TMonth
+}
+
+export type TAcademicSemesterNameCodeMapper = {
+    [key: string]: string
 }
