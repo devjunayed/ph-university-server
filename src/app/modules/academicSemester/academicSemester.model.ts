@@ -5,6 +5,8 @@ import {
     SemesterCode,
     SemesterName,
 } from './academicSemester.constants'
+import AppError from '../../errors/AppError'
+import httpStatus from 'http-status'
 
 const academicSemesterSchema = new Schema<TAcademicSemester>(
     {
@@ -44,7 +46,7 @@ academicSemesterSchema.pre('save', async function (next) {
     const isSemesterExists = await AcademicSemester.findOne({ name, year })
 
     if (isSemesterExists) {
-        throw new Error('Semester already exists')
+        throw new AppError(httpStatus.NOT_FOUND, 'Semester already exists')
     }
     next()
 })
@@ -57,12 +59,12 @@ academicSemesterSchema.pre('findOneAndUpdate', async function (next) {
     const isSemesterExists = await AcademicSemester.findOne({ name, year })
 
     if (isSemesterExists) {
-        throw new Error('Semester already exists')
+        throw new AppError(httpStatus.NOT_FOUND, 'Semester already exists')
     }
     next()
 })
 
 export const AcademicSemester = model<TAcademicSemester>(
-    'AcademicSemester',
+    'academic-semester',
     academicSemesterSchema
 )
