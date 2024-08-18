@@ -14,3 +14,4 @@ const userValidationSchema = z.object({
 export const UserValidationSchema = {
     userValidationSchema,
 }
+
