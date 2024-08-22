@@ -7,6 +7,7 @@ import config from '../config'
 import handleZodError from '../errors/handleZodError'
 import handleValidationError from '../errors/handleValidationError'
 import handleDuplicateError from '../errors/handleDuplicateError'
+import AppError from '../errors/AppError'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     // setting default values
@@ -51,6 +52,27 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         statusCode = simplifiedError.statusCode
         message = simplifiedError.message
         errorSources = simplifiedError.errorSources
+    }
+    // app error
+    else if(err instanceof AppError){
+        statusCode = err.statusCode
+        message = err.message
+        errorSources = [
+            {
+                path: '',
+                message: err.message
+            }
+        ]
+    }
+    // error
+    else if(err instanceof Error){
+        message = err.message
+        errorSources = [
+            {
+                path: '',
+                message: err.message
+            }
+        ]
     }
 
     // returning the error
