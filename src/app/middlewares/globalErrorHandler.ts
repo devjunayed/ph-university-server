@@ -6,6 +6,7 @@ import { TErrorSource } from '../interface/error'
 import config from '../config'
 import handleZodError from '../errors/handleZodError'
 import handleValidationError from '../errors/handleValidationError'
+import handleDuplicateError from '../errors/handleDuplicateError'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     // setting default values
@@ -30,6 +31,22 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     // handling mongoose error
     else if (err?.name === 'ValidatorError') {
         const simplifiedError = handleValidationError(err)
+
+        statusCode = simplifiedError.statusCode
+        message = simplifiedError.message
+        errorSources = simplifiedError.errorSources
+    }
+    // cast error
+    else if(err?.name === 'CastError'){
+        const simplifiedError = handleValidationError(err)
+
+        statusCode = simplifiedError.statusCode
+        message = simplifiedError.message
+        errorSources = simplifiedError.errorSources
+    }
+    // duplicate error
+    else if(err?.code === 11000){
+        const simplifiedError = handleDuplicateError(err)
 
         statusCode = simplifiedError.statusCode
         message = simplifiedError.message
