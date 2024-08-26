@@ -1,70 +1,66 @@
-import { model, Schema } from 'mongoose'
-import { TAcademicSemester } from './academicSemester.interface'
+import { Schema, model } from 'mongoose';
 import {
-    Months,
-    SemesterCode,
-    SemesterName,
-} from './academicSemester.constants'
-import AppError from '../../errors/AppError'
-import httpStatus from 'http-status'
+  AcademicSemesterCode,
+  AcademicSemesterName,
+  Months,
+} from './academicSemester.constant';
+import { TAcademicSemester } from './academicSemester.interface';
 
-const academicSemesterSchema = new Schema<TAcademicSemester>(
-    {
-        name: {
-            type: String,
-            required: [true, 'Name is required'],
-            enum: SemesterName,
-        },
-        code: {
-            type: String,
-            enum: SemesterCode,
-            required: [true, 'Code is required'],
-        },
-        year: {
-            type: String,
-            required: [true, 'Year is required'],
-        },
-        startMonth: {
-            type: String,
-            enum: Months,
-            required: [true, 'Start Month is required'],
-        },
-        endMonth: {
-            type: String,
-            enum: Months,
-            required: [true, 'End Month is required'],
-        },
+const acdemicSemesterSchema = new Schema<TAcademicSemester>(
+  {
+    name: {
+      type: String,
+      required: true,
+      enum: AcademicSemesterName,
     },
-    {
-        timestamps: true,
-    }
-)
+    year: {
+      type: String,
+      required: true,
+    },
+    code: {
+      type: String,
+      required: true,
+      enum: AcademicSemesterCode,
+    },
+    startMonth: {
+      type: String,
+      required: true,
+      enum: Months,
+    },
+    endMonth: {
+      type: String,
+      required: true,
+      enum: Months,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
 
-academicSemesterSchema.pre('save', async function (next) {
-    const { name, year } = this
+acdemicSemesterSchema.pre('save', async function (next) {
+  const isSemesterExists = await AcademicSemester.findOne({
+    year: this.year,
+    name: this.name,
+  });
 
-    const isSemesterExists = await AcademicSemester.findOne({ name, year })
+  if (isSemesterExists) {
+    throw new Error('Semester is already exists !');
+  }
+  next();
+});
 
-    if (isSemesterExists) {
-        throw new AppError(httpStatus.NOT_FOUND, 'Semester already exists')
-    }
-    next()
-})
-academicSemesterSchema.pre('findOneAndUpdate', async function (next) {
-    
-    const update = this.getUpdate();
-    const{name, year} = update;
+export const AcademicSemester = model<TAcademicSemseter>(
+  'AcademicSemester',
+  acdemicSemesterSchema,
+);
 
+// Name Year
+//2030 Autumn => Created
+// 2031 Autumn
+//2030 Autumn => XXX
+//2030 Fall => Created
 
-    const isSemesterExists = await AcademicSemester.findOne({ name, year })
-
-    if (isSemesterExists) {
-        throw new AppError(httpStatus.NOT_FOUND, 'Semester already exists')
-    }
-    next()
-})
-
-export const AcademicSemester = model<TAcademicSemester>(
-    'academic-semester',
-    academicSemesterSchema
-)
+// Autumn 01
+// Summar 02
+// Fall 03

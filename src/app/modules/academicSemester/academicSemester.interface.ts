@@ -1,28 +1,28 @@
-export type TMonth =
-    | 'January'
-    | 'February'
-    | 'March'
-    | 'April'
-    | 'May'
-    | 'June'
-    | 'July'
-    | 'August'
-    | 'September'
-    | 'October'
-    | 'November'
-    | 'December'
+export type TMonths =
+  | 'January'
+  | 'February'
+  | 'March'
+  | 'April'
+  | 'May'
+  | 'June'
+  | 'July'
+  | 'August'
+  | 'September'
+  | 'October'
+  | 'November'
+  | 'December';
 
-export type TSemestercode = '01' | '02' | '03'
-export type TSemesterName = 'Autumn' | 'Summer' | 'Fall'
+export type TAcademicSemesterName = 'Autumn' | 'Summar' | 'Fall';
+export type TAcademicSemesterCode = '01' | '02' | '03';
 
 export type TAcademicSemester = {
-    name: TSemesterName
-    code: TSemestercode
-    year: string
-    startMonth: TMonth
-    endMonth: TMonth
-}
+  name: TAcademicSemesterName;
+  code: TAcademicSemesterCode;
+  year: string;
+  startMonth: TMonths;
+  endMonth: TMonths;
+};
 
 export type TAcademicSemesterNameCodeMapper = {
-    [key: string]: string
-}
+  [key: string]: string;
+};

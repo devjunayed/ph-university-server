@@ -1,16 +1,18 @@
-import { Response } from "express";
+import { Response } from 'express';
 
-type TResponseData<T> = {
-    statusCode: number,
-    success: boolean,
-    message?: string,
-    data: T
-}
+type TResponse<T> = {
+  statusCode: number;
+  success: boolean;
+  message?: string;
+  data: T;
+};
 
-export const sendResponse = <T> (res: Response, data: TResponseData<T>) => {
-    res.status(data.statusCode as number).json({
-        success: data.success,
-        message: data.message,
-        data: data.data
-    });
-}
+const sendResponse = <T>(res: Response, data: TResponse<T>) => {
+  res.status(data?.statusCode).json({
+    success: data.success,
+    message: data.message,
+    data: data.data,
+  });
+};
+
+export default sendResponse;
