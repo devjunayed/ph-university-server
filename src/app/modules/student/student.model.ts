@@ -140,7 +140,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
         admissionSemester: {
             type: Schema.Types.ObjectId,
             ref: 'academic-semester',
-            required: true
+            required: true,
         },
         isDeleted: {
             type: Boolean,
@@ -149,10 +149,11 @@ const studentSchema = new Schema<TStudent, StudentModel>(
         academicDepartment: {
             type: Schema.Types.ObjectId,
             ref: 'academic-department',
-            required: true
-        }
+            required: true,
+        },
     },
-    {   timestamps: true,
+    {
+        timestamps: true,
         toJSON: {
             virtuals: true,
         },
@@ -161,7 +162,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 
 // virtual
 studentSchema.virtual('fullName').get(function () {
-    return this.name.firstName + this.name.middleName + this.name.lastName
+    return this?.name?.firstName + this?.name?.middleName + this?.name?.lastName
 })
 
 // Query Middleware
